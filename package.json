@@ -1,0 +1,7 @@
+{
+  "name": "api-rpc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Mateus Soares da Rocha <rocha.mateus96@gmail.com>",
+  "license": "MIT"
+}
