@@ -22,6 +22,6 @@ Data sent incorrectly or nonstandard.
 - `/filterLine` - Lists users filtered from a parameter;
 - `/popLine` - Get the person out of the front row;
 
-# Observações
+# Note
 
 This API contains four users previously registered HARDCODED
