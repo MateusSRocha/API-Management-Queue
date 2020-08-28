@@ -57,8 +57,16 @@ indexRouter.post("/createUser", (req, res) => {
 });
 
 indexRouter.post("/addToLine", (req, res) => {
-  const { id } = req.body;
+  let { id } = req.body;
   users[id].id = line.length + 1;
+
+  line.forEach((user) => {
+    if (user.email === users[id].email || user.name === users[id].name) id = -1;
+  });
+
+  if (id === -1)
+    return res.send("A user with that name or email already exists in the line");
+
   if (line.push(users[id]))
     res
       .status(200)
