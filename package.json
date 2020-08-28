@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/bin/www"
+    "prestart": "babel ./src --out-dir build",
+    "start": "node ./build/bin/www",
+    "startdev": "nodemon --exec babel-node ./src/bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
