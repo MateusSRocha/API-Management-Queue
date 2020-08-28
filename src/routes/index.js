@@ -1,4 +1,5 @@
 import express from "express";
+import lineController from '../controllers/lineController'
 
 const users = [
   {
@@ -35,86 +36,16 @@ indexRouter.get("/users/:id", (req, res) =>
   res.status(200).json(users[req.params.id])
 );
 
-indexRouter.post("/createUser", (req, res) => {
-  const { name, email, gender } = req.body;
+indexRouter.post("/createUser", lineController.createUser);
 
-  if (!name || !email || !gender) {
-    return res.status(400).send("One or more required fields are missing");
-  }
+indexRouter.post("/addToLine", lineController.addToLine);
 
-  let id = users.length;
+indexRouter.get("/findPosition", lineController.findPosition);
 
-  users.forEach((user) => {
-    if (user.email === email || user.name === name) id = -1;
-  });
+indexRouter.get("/showLine", lineController.showLine);
 
-  if (id === -1)
-    return res.send("A user with that name or email already exists");
+indexRouter.get("/filterLine", lineController.filterLine);
 
-  users[id] = { id, name, email, gender };
-
-  return res.status(200).send({ id, name, email, gender });
-});
-
-indexRouter.post("/addToLine", (req, res) => {
-  let { id } = req.body;
-  users[id].id = line.length + 1;
-
-  line.forEach((user) => {
-    if (user.email === users[id].email || user.name === users[id].name) id = -1;
-  });
-
-  if (id === -1)
-    return res.send("A user with that name or email already exists in the line");
-
-  if (line.push(users[id]))
-    res
-      .status(200)
-      .send("Position " + line[line.length - 1].id + " in the queue ");
-});
-
-indexRouter.get("/findPosition", (req, res) => {
-  const { email } = req.body;
-  let indice = -1;
-  line.forEach((user, index) => {
-    if (user.email === email) indice = index + 1;
-  });
-  indice === -1
-    ? res.status(400).send("This email dont exists")
-    : res.status(200).send("Position " + indice + " in the queue");
-});
-
-indexRouter.get("/showLine", (req, res) => {
-  let string = "";
-  line.forEach((user, index) => {
-    string += `Position ${index + 1}:
-    name: ${user.name},
-    email: ${user.email},
-    gender: ${user.gender},
-    \n`;
-  });
-  res.status(200).send(string);
-});
-
-indexRouter.get("/filterLine", (req, res) => {
-  const { gender } = req.body;
-  let string = "";
-  line.forEach((user, index) => {
-    if (user.gender === gender) {
-      string += `Position ${index + 1}:
-      name: ${user.name},
-      email: ${user.email},
-      gender: ${user.gender},
-      \n`;
-    }
-  });
-  res.status(200).send(string);
-});
-
-indexRouter.delete("/popLine", (req, res) => {
-  line[0]
-    ? res.status(200).send(line.shift())
-    : res.status(400).send("Empty line");
-});
+indexRouter.delete("/popLine", lineController.popLine);
 
 export default indexRouter;
