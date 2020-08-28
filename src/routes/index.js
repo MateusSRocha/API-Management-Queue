@@ -68,8 +68,8 @@ indexRouter.post("/addToLine", (req, res) => {
 indexRouter.get("/findPosition", (req, res) => {
   const { email } = req.body;
   let indice = -1;
-  line.forEach((user) => {
-    if (user.email === email) indice = user.id;
+  line.forEach((user, index) => {
+    if (user.email === email) indice = index + 1;
   });
   indice === -1
     ? res.status(400).send("This email dont exists")
@@ -78,8 +78,8 @@ indexRouter.get("/findPosition", (req, res) => {
 
 indexRouter.get("/showLine", (req, res) => {
   let string = "";
-  line.forEach((user) => {
-    string += `Position ${user.id}:
+  line.forEach((user, index) => {
+    string += `Position ${index + 1}:
     name: ${user.name},
     email: ${user.email},
     gender: ${user.gender},
@@ -91,9 +91,9 @@ indexRouter.get("/showLine", (req, res) => {
 indexRouter.get("/filterLine", (req, res) => {
   const { gender } = req.body;
   let string = "";
-  line.forEach((user) => {
+  line.forEach((user, index) => {
     if (user.gender === gender) {
-      string += `Position ${user.id}:
+      string += `Position ${index + 1}:
       name: ${user.name},
       email: ${user.email},
       gender: ${user.gender},
@@ -104,7 +104,9 @@ indexRouter.get("/filterLine", (req, res) => {
 });
 
 indexRouter.delete("/popLine", (req, res) => {
-  line[0] ? res.status(200).send(line.pop()) : res.status(400).send("Empty line");
+  line[0]
+    ? res.status(200).send(line.shift())
+    : res.status(400).send("Empty line");
 });
 
 export default indexRouter;
